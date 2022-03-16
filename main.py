@@ -73,9 +73,9 @@ class Window(object):
         button_6.grid(row=7, column=3)
 
     def get_selected_row(self):
-        index = self.list_box.curselection()[0]   #curselection() = zobrazenie vybratých položiek
+        index = self.list_box.curselection()[0]   #curselection() = display selected items
         self.selected_tuple = self.list_box.get(index)      #index of every selected row
-        self.e_title.delete(0, END)     #delete everything from entry, if is there something
+        self.e_title.delete(0, END)               #delete everything from entry, if is there something
         self.e_title.insert(END, self.selected_tuple[1])
         self.e_author.delete(0, END)
         self.e_author.insert(END, self.selected_tuple[2])
@@ -84,31 +84,28 @@ class Window(object):
         self.e_isbn.delete(0, END)
         self.e_isbn.insert(END, self.selected_tuple[4])
 
-    #view
-    #potrebujeme najprv vymazat vsetko a potom zobrazit vsetky riadky
+    
     def view_command(self):
-        self.list_box.delete(0, END)   #vymazat vsetko z entry
-        for row in database.view():     #zobrazit kazdy riadok v database
-            self.list_box.insert(END, row)    #vlozime kazdy riadok do listboxu az do konca
+        self.list_box.delete(0, END)   
+        for row in database.view():     #show every row in db
+            self.list_box.insert(END, row)    #add every row to listboxu to the END
 
-    #search
     def search_command(self):
         self.list_box.delete(0, END)
         for row in database.search(self.title_text.get(), self.author_text.get(), self.year_text.get(), self.isbn_text.get()):
             self.list_box.insert(END, row)   #search new values at the END of the list
 
-    #add
     def add_command(self):
         database.insert(self.title_text.get(), self.author_text.get(), self.year_text.get(), self.isbn_text.get())
         self.list_box.delete(0, END)
         self.list_box.insert(END, (self.title_text.get(), self.author_text.get(), self.year_text.get(), self.isbn_text.get()))
         #ukaze sa vlozena kniha v listbox hned ked ju vlozime nie az ked stlacime button 'View all'
 
-    #delete
+        
     def delete_command(self):
         database.delete(self.selected_tuple[0])
 
-    #update
+        
     def update_command(self):
         database.update(self.selected_tuple[0], self.title_text.get(), self.author_text.get(), self.year_text.get(), self.isbn_text.get())
 
